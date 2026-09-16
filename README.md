@@ -177,7 +177,7 @@ GS1 EPCIS/CBV 标准词汇无法覆盖陈皮特有的业务属性（品种、成
 <a id="harvesting"></a>
 ### harvesting — 采摘建批
 URI：`https://github.com/hyjhyx/chenpi/tree/main#harvesting`
-表示农户采摘果子，用于后续的
+鲜苷果子被农户采摘
 
 <a id="peeling"></a>
 ### peeling — 开皮 · 晒制
