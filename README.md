@@ -177,7 +177,7 @@ GS1 EPCIS/CBV 标准词汇无法覆盖陈皮特有的业务属性（品种、成
 <a id="harvesting"></a>
 ### harvesting — 采摘建批
 URI：`https://github.com/hyjhyx/chenpi/tree/main#harvesting`
-表示项目记录的采摘建批，不额外宣称标识首次被使用。旧链内的 `urn:epcglobal:cbv:bizstep:harvesting` 不是本版导出所使用的标准词项；不自动映射为 commissioning。
+表示农户采摘果子，用于后续的
 
 <a id="peeling"></a>
 ### peeling — 开皮 · 晒制
@@ -187,7 +187,7 @@ URI：`https://github.com/hyjhyx/chenpi/tree/main#peeling`
 <a id="sun_turning"></a>
 ### sun_turning — 翻晒
 URI：`https://github.com/hyjhyx/chenpi/tree/main#sun_turning`
-陈化期间对陈皮批的周期性翻晒。用于 ObjectEvent（`action: OBSERVE`），可多次发生；配合 `chenpi:round`、`chenpi:weightKg`、`chenpi:fileHash` 记录过程证据。v4.7 可进一步附带图像感知哈希、视觉审核摘要和最终报告哈希；这些字段提高可审计性，但不能单独认证线下事实真实。
+陈化期间对陈皮批的周期性翻晒。用于 ObjectEvent（`action: OBSERVE`），可多次发生；配合 `chenpi:round`、`chenpi:weightKg`、`chenpi:fileHash` 记录过程证据。
 
 ## 6. 设计约定
 
