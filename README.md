@@ -20,8 +20,7 @@ GS1 EPCIS/CBV 标准词汇无法覆盖陈皮特有的业务属性（品种、成
 术语 URI = 命名空间 URI + 术语名，例如 `chenpi:variety` 展开为
 `https://github.com/hyjhyx/chenpi/tree/main#variety`；远端页面是否具有对应锚点，需要发布后验证。
 
-> URI 与默认分支 `main` 绑定，请保持分支名稳定；重命名分支会导致已发布 URI 失效。
-> 如将来迁移至 GitHub Pages 等长期地址，应保留旧 URI 的访问与明确映射，并发布词汇/Context 新版本；直接改前缀会改变展开后的术语身份，不能静默替换历史文档。
+
 
 ## 2. 在 EPCIS JSON-LD 中引用
 
@@ -197,44 +196,7 @@ URI：`https://github.com/hyjhyx/chenpi/tree/main#sun_turning`
 3. 自定义重量字段 `weightKg` 固定千克；标准 QuantityElement 已知重量则同时填 `quantity` 和 `uom: KGM`。未知投入数量只填 `epcClass`，不填数量和单位。
 4. 陈化年份**不设字段**：由包装事件与开皮事件的 `eventTime` 之差在查询时计算，避免可篡改的落库值。
 
-## 7. 导出映射与审计扩展
-
-### v4.6 起使用的状态和来源扩展
-
-`https://github.com/hyjhyx/chenpi/tree/main#sellable`：项目的可售业务状态，不推断商品是否处于消费者可接触区域。售出则映射为 CBV `retail_sold`。原始账本内 `sold` 等旧值仍保留。
-
-| 属性 | 类型与含义 |
-|---|---|
-| `chenpi:mappingVersion` | string；文档和事件采用的导出映射版本 |
-| `chenpi:sourceObjectType` / `sourceObjectID` | string；事件所属原始对象类型与内部 ID |
-| `chenpi:sourceOwnerMSP` | string；对象的记录组织或翻晒 operator |
-| `chenpi:sourceParentType` / `sourceParentID` | string；原始对象直接上游的类型与内部 ID，不是 EPCIS 聚合 parentID |
-| `chenpi:sourceTxID` | string；原始事件内交易 ID；批量交易中多条事件可共享 |
-| `chenpi:sourceEventDigest` | string；原始 GS1EventObject 经 Go encoding/json 序列化后的 SHA-256；不是区块证明或通用 JSON 规范化签名 |
-| `chenpi:legacyBizStep` / `legacyDisposition` | string；发生映射时保留的旧值 |
-| `chenpi:legacyTransactions` | object array；每项保存 `chenpi:documentType` 和 `chenpi:documentNumber` |
-| `chenpi:inputQuantityStatus` | string；当前为 `not_recorded` |
-| `chenpi:collectionCompleteness` | string；文档层固定为 `not_attested`，不证明集合完整 |
-| `chenpi:sourceChannel` | string；可读取到通道名时添加；空 mock 通道不输出 |
-| `chenpi:mspId` | string；Party Master Data 中的 Fabric MSP 标识 |
-| `chenpi:gcp` | string；Party Master Data 中登记的 GS1 Company Prefix |
-
-`sourceObjectID`、`sourceParentID` 是应用内部编号，例如 `LU-06`、`PKG-F5`；它们不等于 LGTIN、SGTIN、SSCC 等 GS1 标识。`sourceTxID` 是 Fabric 交易 ID，`sourceEventDigest` 是项目定义的事件摘要，两者都不能脱离账本独立充当区块包含证明。
-
-`legacyTransactions` 中每一项包含：
-
-| 属性 | 类型与含义 |
-|---|---|
-| `chenpi:documentType` | string；原账本保存的旧 CBV 单据类型 URI |
-| `chenpi:documentNumber` | string；原始采购单或发票编号 |
-
-来源属性在当前 Context 中通过前缀扩展；其值保持普通字符串/数字，不应擅自解释为带 `@id` 类型的 RDF 边。包裹的 `sourceParentID` 用于保留陈化批关联；标准 AggregationEvent 的 `parentID` 仍是 SSCC。对 AgingEvent，sourceObjectID 是 lotUnitID，不是独立唯一键，应联合 eventID、时间和原始来源定位。
-
-事件 ID 在添加上述来源字段前计算，保持与旧导出的事件身份一致。导出摘要只校验返回内容的一致性；真实审计还需校验通道、已提交交易及授权来源。词汇发布后需检查长期可访问性；本次仅修改本地词汇文档，未发布远端命名空间页面。
-
-后续可为柑果（鲜果）等相关对象定义独立命名空间（如 `fruit:`），以独立文档发布，与 `chenpi:` 并行引用于同一 `@context`。术语的新增 / 变更通过版本号与变更记录管理，已发布术语的 URI 与语义保持稳定。
-
-## 8. 许可
+## 7. 许可
 
 本词汇表文档以 CC BY 4.0 发布，欢迎引用与反馈（Issues）。
 
